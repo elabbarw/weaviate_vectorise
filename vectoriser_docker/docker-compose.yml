@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  eit_text2vec:
+    image: semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1 #faster
+    ports:
+      - "8080:8080"
+    environment:
+      ENABLE_CUDA: 1 # set to 1 to enable
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

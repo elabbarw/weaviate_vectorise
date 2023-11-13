@@ -1,0 +1,38 @@
+---
+version: '3.4'
+services:
+  weaviate:
+    volumes:
+      - /var/weaviate:/var/lib/weaviate
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: semitechnologies/weaviate:1.20.1
+    ports:
+    - 8080:8080
+    restart: on-failure:0
+    environment:
+      TRANSFORMERS_INFERENCE_API: 'GPU server with vectoriser'
+      SUM_INFERENCE_API: 'http://sum-transformers:8080'
+      SPELLCHECK_INFERENCE_API: 'http://text-spellcheck:8080'
+      QUERY_DEFAULTS_LIMIT: 25
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-transformers'
+      ENABLE_MODULES: 'text2vec-transformers,sum-transformers,text-spellcheck,text2vec-openai'
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'check.env'
+      AUTHENTICATION_APIKEY_USERS: 'email'
+      CLUSTER_HOSTNAME: 'hostname'
+  text-spellcheck:
+    image: semitechnologies/text-spellcheck-model:pyspellchecker-en
+  sum-transformers:
+    image: semitechnologies/sum-transformers:facebook-bart-large-cnn-1.0.0
+    environment:
+      ENABLE_CUDA: '0'
+secrets:
+  apikey:
+    file: ./.env

@@ -1,0 +1,9 @@
+weaviate-client
+langchain
+gptrim
+lxml
+bs4
+python-dotenv
+atlassian-python-api
+markdownify
+sentence-transformers
