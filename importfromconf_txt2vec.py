@@ -119,5 +119,3 @@ with client.batch(500) as batch:
     
 print(f"Import complete")
 
-
-### You will then use EITBLYBOT async_search.py to async query the objects"""
